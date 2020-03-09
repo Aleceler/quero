@@ -16,12 +16,14 @@ const scholarships = {
     },
   },
   effects: (dispatch) => ({
-    async fetch() {
+    async fetch(params) {
       dispatch.scholarship.setLoading(true);
 
       const response = await api.scholarship.get();
 
-      dispatch.scholarship.setScholarships(response);
+      const semesterFilter = params.semester !== 'Todos os semestres' ? response.filter((item) => item.enrollment_semester === params.semester) : response;
+
+      dispatch.scholarship.setScholarships(semesterFilter);
 
       dispatch.scholarship.setLoading(false);
     },

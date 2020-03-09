@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
@@ -41,15 +42,21 @@ const PeriodButtonStyledActive = styled(PeriodButtonStyled)`
 `;
 
 const PeriodButton = ({ periods }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch.scholarship.fetch({ semester: 'Todos os semestres' });
+  }, [dispatch.scholarship]);
+
   const [active, setActive] = useState(periods[0]);
 
   return periods.map((item, index) => (
     active === item
-      ? <PeriodButtonStyledActive key={index} onClick={() => setActive(item)}>
-            {item}
+      ? <PeriodButtonStyledActive key={index} onClick={() => { setActive(item); dispatch.scholarship.fetch({ semester: item }); }}>
+            {item.indexOf('.') > -1 ? `${item.split('.')[1]}º semestre de ${item.split('.')[0]}` : item}
         </PeriodButtonStyledActive>
-      : <PeriodButtonStyled key={index} onClick={() => setActive(item)}>
-            {item}
+      : <PeriodButtonStyled key={index} onClick={() => { setActive(item); dispatch.scholarship.fetch({ semester: item }); }}>
+            {item.indexOf('.') > -1 ? `${item.split('.')[1]}º semestre de ${item.split('.')[0]}` : item}
         </PeriodButtonStyled>
   ));
 };

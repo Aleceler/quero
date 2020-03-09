@@ -5,6 +5,6 @@ const api = axios.create({
   baseURL: 'https://testapi.io/api/redealumni',
 });
 
-export const mock = new MockAdapter(api, { delayResponse: 2000 });
+export const mock = new MockAdapter(api, { delayResponse: 1000 });
 
 export default api;

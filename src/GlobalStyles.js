@@ -7,9 +7,11 @@ export default createGlobalStyle`
         outline: 0;
         box-sizing: border-box;
         font-family: 'Red Hat Text', sans-serif;
-        font-size: 14px;
     }
 
+    p, h2, h3, h4, h5, span {
+        font-size: 14px;
+    }
 
     body{
         -webkit-font-smoothing: antialiased;

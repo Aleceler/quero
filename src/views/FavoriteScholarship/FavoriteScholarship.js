@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { AddButton, PeriodButton } from '../../components/Buttons';
@@ -53,7 +52,6 @@ const PeriodContainer = styled.div`
 
 
 const FavoriteScholarship = () => {
-  const dispatch = useDispatch();
   const scholarship = useSelector((state) => state.scholarship);
 
   console.log(scholarship);
@@ -69,7 +67,7 @@ const FavoriteScholarship = () => {
                     <PeriodContainer>
                         <PeriodButton periods={['Todos os semestres', '2019.2', '2020.1']} />
                     </PeriodContainer>
-                    <AddButton onClick={() => dispatch.scholarship.fetch()} title="Adicionar Bolsa" subtitle="Clique para adicionar bolsas de cursos do seu interesse" />
+                    <AddButton title="Adicionar Bolsa" subtitle="Clique para adicionar bolsas de cursos do seu interesse" />
                 </Container>
   );
 };

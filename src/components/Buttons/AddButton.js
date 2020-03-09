@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import PropTypes from 'prop-types';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Modal from '@material-ui/core/Modal';
+import Filters from '../Modal';
 
 const AddButtonStyled = styled.button`
     cursor: pointer;
@@ -41,16 +43,24 @@ const Texts = styled.div`
 `;
 
 
-const AddButton = ({ title, subtitle, onClick }) => (
-        <AddButtonStyled onClick={onClick}>
+const AddButton = ({ title, subtitle }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+        <Modal open={open} onClose={() => setOpen(false)}>
+            <Filters />
+        </Modal>
+        <AddButtonStyled onClick={() => setOpen(true)}>
             <AddCircleIcon style={{ height: '80px', width: '80px' }} />
             <Texts>
                 <p>{title}</p>
                 <span>{subtitle}</span>
             </Texts>
         </AddButtonStyled>
-);
-
+    </>
+  );
+};
 
 AddButton.propTypes = {
   title: PropTypes.string.isRequired,
