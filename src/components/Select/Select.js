@@ -14,6 +14,7 @@ const SelectStyled = styled.div`
         color: ${(props) => props.theme.colors.text};
         font-size: ${(props) => props.theme.fontSize.medium};
         font-weight: 300;
+        background: white;
     }
 `;
 
@@ -27,6 +28,7 @@ const Option = styled.option`
     color: ${(props) => props.theme.colors.text};
     font-size: ${(props) => props.theme.fontSize.medium};
     font-weight: 300;
+    background: white;
 `;
 
 const Select = ({ name, label, options }) => (

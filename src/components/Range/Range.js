@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Field } from 'formik';
 import styled from 'styled-components';
+import { formatToBRL } from 'brazilian-values';
 import PropTypes from 'prop-types';
 
 const RangeContainer = styled.div`
+margin: 10px 0;
   position: relative;
   width: 100%;
 `;
@@ -100,51 +102,63 @@ const Fill = styled.div`
   -moz-top: calc(50% - 2px);
 `;
 
+const Label = styled.label`
+    color: ${(props) => props.theme.colors.text};
+    font-size: 14px;
+    font-weight: 500;
+`;
+
+
 const Range = ({
   max,
   min,
   name,
   step,
   initValue,
+  label,
 }) => {
   const [values, setValues] = useState(initValue);
   const percentage = ((values - min) * 100) / (max - min);
 
-  return (
-    <RangeContainer>
-          <Field
-              name={name}
-              render={({ field }) => (
-              <Input
-                  onInput={(e) => setValues(e.target.value)}
-                  value={initValue}
-                  max={max}
-                  min={min}
-                  step={step}
-                  {...field}
-                />
-              )}
-          />
-        <Fill style={{ width: `${percentage}%` }} />
-      </RangeContainer>
+  return (<>
+        <Label htmlFor={name}>{label}</Label>
+        <p>{formatToBRL(values)}</p>
+        <RangeContainer>
+            <Field
+                name={name}
+                render={({ field }) => (
+                <Input
+                    onInput={(e) => setValues(e.target.value)}
+                    value={initValue}
+                    max={max}
+                    min={min}
+                    step={step}
+                    {...field}
+                    />
+                )}
+            />
+            <Fill style={{ width: `${percentage}%` }} />
+        </RangeContainer>
+  </>
   );
 };
 
+Range.defaultProps = {
+  max: 10000,
+  min: 0,
+  name: 'range',
+  step: 500,
+  initValue: 5000,
+  label: 'LABEL',
+};
 
-// Range.defaultProps = {
-//   max: 10000,
-//   min: 0,
-//   name: 'range',
-//   step: 500,
-//   value: 5000,
-// };
-
-// Range.propTypes = {
-//   max: PropTypes.number,
-//   min: PropTypes.number,
-//   name: PropTypes.string,
-//   step: PropTypes.number,
-//   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-// };
+Range.propTypes = {
+  max: PropTypes.number.isRequired,
+  min: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  step: PropTypes.number.isRequired,
+  initValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  label: PropTypes.string.isRequired,
+};
 
 export default Range;

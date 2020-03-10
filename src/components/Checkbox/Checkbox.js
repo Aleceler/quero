@@ -4,6 +4,7 @@ import { Field } from 'formik';
 import PropTypes from 'prop-types';
 
 export const CheckBox = styled.div`
+margin: 10px 0;
 
     .input-helper {
     position: relative;
