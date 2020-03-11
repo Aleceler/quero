@@ -4,9 +4,14 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const SelectStyled = styled.div`
-    
+
+  @media (min-width: 1024px) {
+      display: flex; 
+      flex-direction: column;
+      min-width: 48%;
+    }
+
     .select{
-        width: 100%;
         height: 35px;
         margin: 3px 0px;
         border-radius: 3px;
@@ -15,6 +20,17 @@ const SelectStyled = styled.div`
         font-size: ${(props) => props.theme.fontSize.medium};
         font-weight: 300;
         background: white;
+        
+        @media (min-width: 1024px) {
+          /* width: 50%; */
+          
+        }
+
+        @media (max-width: 1024px) {
+          width: 100%;
+          
+        }
+
     }
 `;
 

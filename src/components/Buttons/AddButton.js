@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 import PropTypes from 'prop-types';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Modal from '@material-ui/core/Modal';
-import Filters from '../Modal';
+import Modal from '../Modal';
 
 const AddButtonStyled = styled.button`
     cursor: pointer;
@@ -49,9 +48,7 @@ const AddButton = ({ title, subtitle }) => {
 
   return (
     <>
-        <Modal open={open} onClose={() => setOpen(false)}>
-            <Filters />
-        </Modal>
+        <Modal show={open} onclose={() => setOpen(false)} />
         <AddButtonStyled onClick={() => setOpen(true)}>
             <AddCircleIcon style={{ height: '80px', width: '80px' }} />
             <Texts>

@@ -25,7 +25,7 @@ export const theme = {
     secondary: '#007A8D',
     primaryYellow: '#FDCB13',
     secondaryYellow: '#DE9E1F',
-    Verde: '#0FA866',
+    verde: '#0FA866',
     text: '#1F2D30',
     background: '#FBFBFB',
     overlay: '31, 45, 48, 0.12',

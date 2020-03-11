@@ -54,7 +54,6 @@ const PeriodContainer = styled.div`
 const FavoriteScholarship = () => {
   const scholarship = useSelector((state) => state.scholarship);
 
-  console.log(scholarship);
 
   return (
                 <Container>

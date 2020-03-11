@@ -31,6 +31,22 @@ margin: 10px 0;
     }
 }
 
+.disabled{
+    .input-helper--checkbox {
+    padding-left: 20px;
+
+    &:before {
+        top: 0;
+        left: 0;
+        background: grey;
+        width: 18px;
+        height: 18px;
+        border-radius: 2px;
+        border: 1px solid #828282;
+    }
+}
+}
+
 input[type="checkbox"] {
     display: none;
     
@@ -49,26 +65,32 @@ input[type="checkbox"] {
     }
 `;
 
-const Checkbox = ({ id, name }) => (
+const Checkbox = ({
+  id, name, label, disabled,
+}) => (
     <CheckBox>
-        <Field id={id} type="checkbox" name={name} />
+        <Field id={id} type="checkbox" disabled={disabled} name={name} />
         <label
+        style={ disabled ? {
+          background: 'lightgrey', borderRadius: '3px', padding: '0px 8px', cursor: 'none',
+        } : {}}
             htmlFor={id}
             className="input-helper input-helper--checkbox"
         >
-            &nbsp;{id}
+            &nbsp;{label}
         </label>
     </CheckBox>
 );
 
 Checkbox.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  name: PropTypes.isRequired,
+  id: PropTypes.isRequired,
 };
 
 Checkbox.defaultProps = {
   name: 'name',
-  id: 'label',
+  id: 'teste',
+  label: '',
 };
 
 export default Checkbox;
