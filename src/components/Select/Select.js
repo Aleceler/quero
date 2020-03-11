@@ -20,15 +20,9 @@ const SelectStyled = styled.div`
         font-size: ${(props) => props.theme.fontSize.medium};
         font-weight: 300;
         background: white;
-        
-        @media (min-width: 1024px) {
-          /* width: 50%; */
-          
-        }
 
         @media (max-width: 1024px) {
           width: 100%;
-          
         }
 
     }
@@ -47,10 +41,12 @@ const Option = styled.option`
     background: white;
 `;
 
-const Select = ({ name, label, options }) => (
+const Select = ({
+  name, label, options, submit,
+}) => (
       <SelectStyled>
         <Label htmlFor={name}>{label}</Label>
-        <Field className="select" as="select" name={name}>
+        <Field className="select" as="select" name={name} onMouseUp={submit}>
             {options.map((item, index) => <Option key={index} value={item}>{item}</Option>)}
         </Field>
       </SelectStyled>

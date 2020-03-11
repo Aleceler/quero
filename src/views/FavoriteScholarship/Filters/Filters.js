@@ -2,8 +2,7 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 
 import Item from './List';
 import Select from '../../../components/Select';
@@ -106,25 +105,34 @@ const Titles = styled.div`
   padding: 10px 0;
 `;
 
+const FindError = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: ${(props) => props.theme.fontSize.large};
+  padding: 20px 0;
+`;
+
 
 const Filters = (props) => {
   const scholarship = useSelector((state) => state.scholarship);
+  const dispatch = useDispatch();
 
-  console.log(scholarship);
   const initialValues = {
     city: '',
     course: '',
-    presencial: '',
-    ead: '',
-    price: 5000,
+    presencial: true,
+    ead: true,
+    price: 10000,
   };
 
   return (
     <Formik
         initialValues={initialValues}
         onSubmit={(values) => {
-          console.log(values);
+          dispatch.scholarship.filter(values);
+          dispatch.cards.fetch(values);
         }}
+
       >
         {({
           handleSubmit,
@@ -137,7 +145,7 @@ const Filters = (props) => {
             </Titles>
             <SelectContainer>
 
-            <Select label="SELECIONE SUA CIDADE"
+            <Select submit={handleSubmit} label="SELECIONE SUA CIDADE"
             options={
                 [
                   '',
@@ -147,7 +155,7 @@ const Filters = (props) => {
                   'Jacareí',
                 ]}
                 name="city" />
-            <Select label="SELECIONE O CURSO DE SUA PREFERÊNCIA"
+            <Select submit={handleSubmit} label="SELECIONE O CURSO DE SUA PREFERÊNCIA"
             options={
                 [
                   '',
@@ -175,13 +183,13 @@ const Filters = (props) => {
               <CheckBoxContainer>
               <Label>COMO VOCÊ QUER ESTUDAR?</Label>
               <div>
-                  <Checkbox label="Presencial" name="presencial" id="Presencial" />
-                  <Checkbox label="EaD" name="ead" id="EaD" />
+                  <Checkbox submit={handleSubmit} label="Presencial" name="presencial" id="Presencial" />
+                  <Checkbox submit={handleSubmit} label="EaD" name="ead" id="EaD" />
               </div>
               </CheckBoxContainer>
 
               <RangeContainer>
-                <Range label="ATÉ QUANTO PODE PAGAR ?" name="price" initValue={initialValues.price} min={0} max={10000} step={500} />
+                <Range submit={handleSubmit} label="ATÉ QUANTO PODE PAGAR ?" name="price" initValue={initialValues.price} min={0} max={10000} step={500} />
               </RangeContainer>
             </ResponsiveFilterContainer>
 
@@ -198,9 +206,15 @@ const Filters = (props) => {
 
             <ListContainer>
                 <Hr />
-                {scholarship.items.map((item, index) => (
-                    <Item key={index} item={item} index={index} />
-                ))}
+                {!scholarship.flag
+                  ? scholarship.items.map((item) => (
+                    <Item key={item.id} item={item} index={item.id} />
+                  ))
+                  : scholarship.filteredList.map((item) => (
+                  <Item key={item.id} item={item} index={item.id} />
+                  ))
+                }
+                {scholarship.flag && scholarship.filteredList.length < 1 && <FindError>Não encontramos resultados na sua busca</FindError>}
             </ListContainer>
 
             <ButtonContainer>

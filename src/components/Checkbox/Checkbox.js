@@ -66,10 +66,10 @@ input[type="checkbox"] {
 `;
 
 const Checkbox = ({
-  id, name, label, disabled,
+  id, name, label, disabled, submit,
 }) => (
     <CheckBox>
-        <Field id={id} type="checkbox" disabled={disabled} name={name} />
+        <Field id={id} type="checkbox" onInput={submit} disabled={disabled} name={name} />
         <label
         style={ disabled ? {
           background: 'lightgrey', borderRadius: '3px', padding: '0px 8px', cursor: 'none',
@@ -83,8 +83,14 @@ const Checkbox = ({
 );
 
 Checkbox.propTypes = {
-  name: PropTypes.isRequired,
-  id: PropTypes.isRequired,
+  name: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.number.isRequired,
+  ]),
+  id: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.number.isRequired,
+  ]),
 };
 
 Checkbox.defaultProps = {

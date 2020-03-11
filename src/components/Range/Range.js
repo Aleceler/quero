@@ -116,6 +116,7 @@ const Range = ({
   step,
   initValue,
   label,
+  submit,
 }) => {
   const [values, setValues] = useState(initValue);
   const percentage = ((values - min) * 100) / (max - min);
@@ -128,7 +129,7 @@ const Range = ({
                 name={name}
                 render={({ field }) => (
                 <Input
-                    onInput={(e) => setValues(e.target.value)}
+                    onInput={(e) => { setValues(e.target.value); submit(); }}
                     value={initValue}
                     max={max}
                     min={min}

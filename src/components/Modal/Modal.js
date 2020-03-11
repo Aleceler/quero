@@ -26,9 +26,9 @@ const customStyles = document.documentElement.clientWidth > 700 ? {
   };
 
 
-const Modal = (props) => {
-  console.log(props);
-  return <ReactModal
+const Modal = (props) =>
+// console.log(props);
+   <ReactModal
                 style={customStyles}
                 isOpen={props.show}
                 onRequestClose={props.onclose}
@@ -37,6 +37,4 @@ const Modal = (props) => {
     >
         <Filters onclose={props.onclose} />
     </ReactModal>;
-};
-
 export default Modal;

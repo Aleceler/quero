@@ -77,7 +77,7 @@ const List = ({ index, item }) => (
             <Checkbox id={index} name={index} disabled={item.enabled === false} />
         </CheckboxContainer>
           <ImgContainer>
-              <img src={item.university.logo_url} />
+              <img alt={`logo da universidade${item.university.name}`} src={item.university.logo_url} />
           </ImgContainer>
           <InfoContainer>
               <div>
