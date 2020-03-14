@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -151,6 +151,7 @@ const FavoriteScholarship = () => {
 
   const dispatch = useDispatch();
 
+
   const list = [];
 
   for (const i in items) {
@@ -177,7 +178,7 @@ const FavoriteScholarship = () => {
                         <ButtonExcluir onClick={() => dispatch.cards.remove(items[i].id)}>Excluir</ButtonExcluir>
                         <ButtonOferta>Ver Oferta</ButtonOferta>
                     </ButtonsContainer>
-            </ScholarshipCards>);
+                </ScholarshipCards>);
     }
   }
 

@@ -19,6 +19,7 @@ const cards = {
   },
   effects: (dispatch) => ({
     async fetch(params) {
+      console.log(params);
       dispatch.cards.setCards(params);
       dispatch.cards.setLoading(false);
     },

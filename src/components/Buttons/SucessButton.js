@@ -11,10 +11,15 @@ const SuccessButtonStyle = styled.button`
     font-size: 16px;
     border-radius: 3px;
     border: solid 1px #e1ad01;
+    :disabled{
+      background: #CACDCE;
+      color: #82898B;
+      border: solid 1px #82898B;
+    }
 `;
 
-const SucessButton = ({ text, onSubmit }) => (
-        <SuccessButtonStyle onSubmit={onSubmit} type="submit">
+const SucessButton = ({ text, onSubmit, disabled }) => (
+        <SuccessButtonStyle onSubmit={onSubmit} disabled={disabled} type="submit">
             {text}
         </SuccessButtonStyle>
 );

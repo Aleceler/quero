@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+
 import { useSelector, useDispatch } from 'react-redux';
+import ArraySort from 'array-sort';
 
 import Item from './List';
 import Select from '../../../components/Select';
@@ -118,6 +121,9 @@ const Filters = (props) => {
   const scholarship = useSelector((state) => state.scholarship);
   const dispatch = useDispatch();
 
+  const items = order === true ? ArraySort(scholarship.items, 'university.name') : ArraySort(scholarship.items, 'id');
+  const filtredItems = order === true ? ArraySort(scholarship.filteredList, 'university.name') : ArraySort(scholarship.filteredList, 'id');
+
   const initialValues = {
     city: '',
     course: '',
@@ -126,20 +132,29 @@ const Filters = (props) => {
     price: 10000,
   };
 
+  Object.size = function (obj) {
+    let size = 0; let
+      key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+  };
+
   return (
     <Formik
         initialValues={initialValues}
         onSubmit={(values) => {
           dispatch.scholarship.filter(values);
           dispatch.cards.fetch(Object.keys(values));
-          props.onclose();
         }}
 
       >
         {({
           handleSubmit,
+          values,
         }) => (
-          <Form onSubmit={handleSubmit} autoComplete="off">
+          <Form onSubmit={() => { handleSubmit(); props.onclose(); }} autoComplete="off">
             <Titles>
             <h1>Adicionar bolsa</h1>
             <p>Filtre e adicione as bolsas do seu interesse.</p>
@@ -200,7 +215,8 @@ const Filters = (props) => {
                     <span>Ordenar por</span>
                     <button type="button" onClick={() => setOrder(!order)} className="buttonIcon">
                         <span>Nome da Faculdade </span>
-                        <ArrowDropDownIcon />
+                        {order ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+
                     </button>
                 </div>
             </OrdenationContainer>
@@ -208,19 +224,19 @@ const Filters = (props) => {
             <ListContainer>
                 <Hr />
                 {!scholarship.flag
-                  ? scholarship.items.map((item) => (
+                  ? items.map((item) => (
                     <Item key={item.id} item={item} index={item.id} />
                   ))
-                  : scholarship.filteredList.map((item) => (
+                  : filtredItems.map((item) => (
                     item && <Item key={item.id} item={item} index={item.id} />
                   ))
                 }
-                {scholarship.flag && scholarship.filteredList.length < 1 && <FindError>Não encontramos resultados na sua busca</FindError>}
+                {scholarship.flag && filtredItems.length < 1 && <FindError>Não encontramos resultados na sua busca</FindError>}
             </ListContainer>
 
             <ButtonContainer>
                 <CancelButton onClick={() => props.onclose()} text="Cancelar" />
-                <SucessButton text="Adicionar bolsa(s)" />
+                <SucessButton disabled={console.log(Object.entries(values))} text="Adicionar bolsa(s)" />
             </ButtonContainer>
           </Form>
         )}
