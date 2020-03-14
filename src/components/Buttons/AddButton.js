@@ -26,6 +26,7 @@ const AddButtonStyled = styled.button`
     }
 
     @media (min-width: 1024px) {
+        margin-right: 10px;
         width: 300px;
         height: 380px;
     }

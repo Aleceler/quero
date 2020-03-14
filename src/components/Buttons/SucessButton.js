@@ -13,8 +13,8 @@ const SuccessButtonStyle = styled.button`
     border: solid 1px #e1ad01;
 `;
 
-const SucessButton = ({ text }) => (
-        <SuccessButtonStyle type="submit">
+const SucessButton = ({ text, onSubmit }) => (
+        <SuccessButtonStyle onSubmit={onSubmit} type="submit">
             {text}
         </SuccessButtonStyle>
 );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -114,6 +114,7 @@ const FindError = styled.div`
 
 
 const Filters = (props) => {
+  const [order, setOrder] = useState(false);
   const scholarship = useSelector((state) => state.scholarship);
   const dispatch = useDispatch();
 
@@ -130,13 +131,13 @@ const Filters = (props) => {
         initialValues={initialValues}
         onSubmit={(values) => {
           dispatch.scholarship.filter(values);
-          dispatch.cards.fetch(values);
+          dispatch.cards.fetch(Object.keys(values));
+          props.onclose();
         }}
 
       >
         {({
           handleSubmit,
-          values,
         }) => (
           <Form onSubmit={handleSubmit} autoComplete="off">
             <Titles>
@@ -197,7 +198,7 @@ const Filters = (props) => {
                 <span>Resultado:</span>
                 <div>
                     <span>Ordenar por</span>
-                    <button type="button" onClick={() => console.log('ae')} className="buttonIcon">
+                    <button type="button" onClick={() => setOrder(!order)} className="buttonIcon">
                         <span>Nome da Faculdade </span>
                         <ArrowDropDownIcon />
                     </button>
@@ -211,7 +212,7 @@ const Filters = (props) => {
                     <Item key={item.id} item={item} index={item.id} />
                   ))
                   : scholarship.filteredList.map((item) => (
-                  <Item key={item.id} item={item} index={item.id} />
+                    item && <Item key={item.id} item={item} index={item.id} />
                   ))
                 }
                 {scholarship.flag && scholarship.filteredList.length < 1 && <FindError>Não encontramos resultados na sua busca</FindError>}

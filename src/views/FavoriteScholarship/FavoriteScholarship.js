@@ -1,8 +1,9 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { formatToBRL } from 'brazilian-values';
+import Rating from '@material-ui/lab/Rating';
 import { AddButton, PeriodButton } from '../../components/Buttons';
 
 const Container = styled.article`
@@ -57,6 +58,28 @@ const Hr = styled.hr`
     margin: 10px 10px;
 `;
 
+const ButtonOferta = styled.button`
+    font-weight:bold;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: ${(props) => props.theme.colors.primaryYellow};
+    border: 1px solid ${(props) => props.theme.colors.secondaryYellow};
+    color: ${(props) => props.theme.colors.text};
+    border-radius: 3px;
+    max-height: 50px;
+`;
+
+const ButtonExcluir = styled.button`
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 10px 20px;
+    color: ${(props) => props.theme.colors.secondary};
+    background-color: white;
+    border: 1px solid ${(props) => props.theme.colors.secondary};
+    border-radius: 3px;
+    max-height: 50px;
+`;
+
 const ScholarshipCards = styled.div`
     background: white;
     color: ${(props) => props.theme.colors.text};
@@ -67,16 +90,21 @@ const ScholarshipCards = styled.div`
     justify-content: space-around;
     align-items: center;
     padding: 20px;
-    margin: 30px 0;
+
 
     img{
         width: 150px;
         height: 40px;
+        margin-bottom: 10px;
     }
 
     p{
         color: ${(props) => props.theme.colors.secondary};
         font-weight: bold;
+    }
+
+    h2{
+        text-transform: uppercase;
     }
 
     h4{
@@ -93,49 +121,67 @@ const ScholarshipCards = styled.div`
     }
 
     @media (max-width: 1024px) {
-        height: 250px;
+        height: 380px;
+        width: 100%;
+        margin: 15px 0px;
     }
 
     @media (min-width: 1024px) {
         width: 300px;
         height: 380px;
+        margin: 30px 10px;
     }
 `;
 
 const ButtonsContainer = styled.div`
     display: flex;
     justify-content: space-around;
-    width: 80%;
+    width: 90%;
+`;
+
+const ListContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 const FavoriteScholarship = () => {
   const cards = useSelector((state) => state.cards.items);
   const items = useSelector((state) => state.scholarship.items);
 
+  const dispatch = useDispatch();
+
   const list = [];
-  const listCards = Object.keys(cards);
-  for (const i in listCards) {
-    listCards[i].length <= 2 && list.push(
-    <ScholarshipCards key={items[listCards[i]].id}>
-        <img src={items[listCards[i]].university.logo_url} alt={items[listCards[i]].university.name}/>
-        <h2>{items[listCards[i]].university.name}</h2>
-        <p>{items[listCards[i]].course.name}</p>
-        <Hr />
-        <h2>{items[listCards[i]].course.kind} - {items[listCards[i]].course.shift}</h2>
-        <span>Inicio das aulas em: {items[listCards[i]].start_date}</span>
-        <Hr />
-        <h3>Mensalidade com o Quero Bolsa:</h3>
-        <h4>{formatToBRL(items[listCards[i]].full_price)}</h4>
-        <h5>{formatToBRL(items[listCards[i]].price_with_discount)} <span>/mes</span></h5>
-        <ButtonsContainer>
-            <button>Excluir</button>
-            <button>Ver Oferta</button>
-        </ButtonsContainer>
-    </ScholarshipCards>,
-    );
+
+  for (const i in items) {
+    if (cards.indexOf(items[i].id.toString()) > -1) {
+      list.push(<ScholarshipCards key={items[i].id}>
+                    <img src={items[i].university.logo_url} alt={items[i].university.name}/>
+                    <h2>{items[i].university.name}</h2>
+                    <p>{items[i].course.name}</p>
+                    <h2>{items[i].university.score} &nbsp;
+                    <Rating
+                        name="half-rating-read"
+                        defaultValue={items[i].university.score}
+                        precision={0.1}
+                        readOnly
+                    /></h2>
+                    <Hr />
+                    <h2>{items[i].course.kind} - {items[i].course.shift}</h2>
+                    <span>Inicio das aulas em: {items[i].start_date}</span>
+                    <Hr />
+                    <h3>Mensalidade com o Quero Bolsa:</h3>
+                    <h4>{formatToBRL(items[i].full_price)}</h4>
+                    <h5>{formatToBRL(items[i].price_with_discount)} <span>/mes</span></h5>
+                    <ButtonsContainer>
+                        <ButtonExcluir onClick={() => dispatch.cards.remove(items[i].id)}>Excluir</ButtonExcluir>
+                        <ButtonOferta>Ver Oferta</ButtonOferta>
+                    </ButtonsContainer>
+            </ScholarshipCards>);
+    }
   }
 
-  console.log(list);
+
   return (
                 <Container>
                     <Titles>
@@ -147,8 +193,10 @@ const FavoriteScholarship = () => {
                     <PeriodContainer>
                         <PeriodButton periods={['Todos os semestres', '2019.2', '2020.1']} />
                     </PeriodContainer>
-                    <AddButton title="Adicionar Bolsa" subtitle="Clique para adicionar bolsas de cursos do seu interesse" />
-                    {list && list}
+                    <ListContainer>
+                        <AddButton title="Adicionar Bolsa" subtitle="Clique para adicionar bolsas de cursos do seu interesse" />
+                        {list && list}
+                    </ListContainer>
 
                 </Container>
   );

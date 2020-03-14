@@ -6,6 +6,7 @@ import * as models from './models';
 const persist = createPersistPlugin({
   version: 2,
   whitelist: [
+    'cards',
   ],
 });
 
