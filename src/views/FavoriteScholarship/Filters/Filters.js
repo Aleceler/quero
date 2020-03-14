@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, isEmptyArray } from 'formik';
 import styled from 'styled-components';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
@@ -132,13 +132,16 @@ const Filters = (props) => {
     price: 10000,
   };
 
-  Object.size = function (obj) {
-    let size = 0; let
-      key;
-    for (key in obj) {
-      if (obj.hasOwnProperty(key)) size++;
+  const MontaLista = (values) => {
+    const arrayItems = [];
+    for (const i in Object.values(values)) {
+      if (Object.values(values)[i] === true) {
+        if (Object.keys(values)[i] <= 24) {
+          arrayItems.push(Object.keys(values)[i]);
+        }
+      }
     }
-    return size;
+    return arrayItems;
   };
 
   return (
@@ -146,7 +149,7 @@ const Filters = (props) => {
         initialValues={initialValues}
         onSubmit={(values) => {
           dispatch.scholarship.filter(values);
-          dispatch.cards.fetch(Object.keys(values));
+          dispatch.cards.fetch(MontaLista(values));
         }}
 
       >
@@ -236,7 +239,7 @@ const Filters = (props) => {
 
             <ButtonContainer>
                 <CancelButton onClick={() => props.onclose()} text="Cancelar" />
-                <SucessButton disabled={console.log(Object.entries(values))} text="Adicionar bolsa(s)" />
+                <SucessButton disabled={Array.isArray(MontaLista(values)) && MontaLista(values).length <= 0} text="Adicionar bolsa(s)" />
             </ButtonContainer>
           </Form>
         )}
